@@ -2221,6 +2221,7 @@ fn emit_index_column_value_new_image(
             expr,
             columns,
             &column_regs,
+            rowid_reg,
             table,
             dest_reg,
         )?;

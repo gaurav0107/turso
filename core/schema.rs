@@ -6329,7 +6329,7 @@ impl BTreeTable {
     /// Like SQLite, reads a double-quoted name in a CHECK constraint that is not a column of the
     /// table as a string literal.
     pub fn convert_double_quoted_check_names_to_strings(&mut self) -> Result<()> {
-        let mut check_constraints = std::mem::take(&mut self.check_constraints);
+        let mut check_constraints = std::mem::replace(&mut self.check_constraints, try_vec![]?);
         for check_constraint in &mut check_constraints {
             double_quoted_names_to_strings(&mut check_constraint.expr, self, true)?;
         }
@@ -6386,7 +6386,7 @@ impl BTreeTable {
     /// anything changed.
     pub fn single_quote_double_quoted_strings(&mut self) -> Result<bool> {
         let mut changed = false;
-        let mut check_constraints = std::mem::take(&mut self.check_constraints);
+        let mut check_constraints = std::mem::replace(&mut self.check_constraints, try_vec![]?);
         for check_constraint in &mut check_constraints {
             if let Some(source) = &check_constraint.source {
                 let mut expr = parse_expr(source)?;
